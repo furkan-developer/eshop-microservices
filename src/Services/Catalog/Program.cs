@@ -1,8 +1,11 @@
+using Carter;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCarter();
 
 var app = builder.Build();
 
@@ -15,11 +18,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () =>
-{
-    return "Catalog Service";
-})
-.WithName("GetServiceName")
-.WithOpenApi();
+app.MapCarter(); 
 
 app.Run();
