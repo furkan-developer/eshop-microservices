@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BuildingBlocks.CQRS;
 using Carter;
 using Catalog.Products.Domain;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,11 +37,11 @@ public class CreateProductEndpoint : ICarterModule
         app.MapPost("api/catalog/products",
             async ([FromBody]CreateProductRequest request, ISender sender) =>
         {
-            var command = new CreateProductCommand(request.Name,request.Category, request.Description, request.ImageFile, request.Price);
+            var command = request.Adapt<CreateProductCommand>();
 
             var result = await sender.Send(command);
 
-            var response = new CreateProductResponse(result.Id);
+            var response = result.Adapt<CreateProductResponse>();
 
             return Results.Created($"/api/catalog/products/{result.Id}",response);
         })
