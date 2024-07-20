@@ -7,6 +7,7 @@ using BuildingBlocks.CQRS;
 using Carter;
 using Catalog.Products.Domain;
 using Mapster;
+using Marten;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +16,16 @@ public record CreateProductResult(Guid Id);
 public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price)
     : ICommand<CreateProductResult>;
 
-internal class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, CreateProductResult>
+internal class CreateProductCommandHandler(IDocumentSession documentSession) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = new Product(){Id=Guid.NewGuid(),Category= request.Category, Description = request.Description, ImageFile = request.ImageFile, Name = request.Name, Price = request.Price};
+        var product = request.Adapt<Product>();
 
-        var result = new CreateProductResult(product.Id);
+        documentSession.Store(product);
+        documentSession.SaveChangesAsync();
+
+        var result = product.Adapt<CreateProductResult>();
     
         return Task.Run(()=> result);
     }
