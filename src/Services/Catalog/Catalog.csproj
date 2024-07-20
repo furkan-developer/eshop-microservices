@@ -9,6 +9,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     <PackageReference Include="Carter" Version="8.2.1"/>
     <PackageReference Include="Mapster" Version="7.3.0"/>
+    <PackageReference Include="Marten" Version="7.24.0"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj"/>
