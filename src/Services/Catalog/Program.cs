@@ -1,4 +1,5 @@
 using Carter;
+using Catalog.Data;
 using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services.AddMediatR(cfg =>{
 builder.Services.AddMarten(options =>{
     options.Connection(builder.Configuration.GetConnectionString("PostgreSQL")!);
 }).UseLightweightSessions();
+
+if(builder.Environment.IsDevelopment())
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
 
 var app = builder.Build();
 
