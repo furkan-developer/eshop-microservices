@@ -5,6 +5,7 @@ namespace Order.Application;
 
 public record OrderDto(
     Guid CustomerId,
+    Guid ProductId,
     string OrderName,
     OrderStatus Status,
     AddressDto Address,
