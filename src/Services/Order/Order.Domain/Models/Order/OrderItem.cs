@@ -2,7 +2,7 @@ namespace Order.Domain;
 
 public class OrderItem : Entity
 {
-    internal OrderItem(Guid id, Guid orderId, Guid productId, int quantity, decimal price) : base(id)
+    internal OrderItem(Guid orderItemId, Guid orderId, Guid productId, int quantity, decimal price) : base(orderItemId)
     {
         OrderId = orderId;
         ProductId = productId;

@@ -6,7 +6,7 @@ namespace Order.Domain;
 public sealed class Order : Entity, IAggregateRoot
 {
     private readonly List<OrderItem> _orderItems = new();
-    private Order(Guid id, Guid customerId, Address shippingAddress) : base(id)
+    private Order(Guid orderId, Guid customerId, Address shippingAddress) : base(orderId)
     {
         CustomerId = customerId;
         ShippingAddress = shippingAddress;
@@ -23,23 +23,23 @@ public sealed class Order : Entity, IAggregateRoot
 
     public IReadOnlyList<OrderItem> OrderItems => _orderItems;
 
-    public static Order Create(Guid id, Guid customerId, Address shippingAddress)
+    public static Order Create(Guid orderId, Guid customerId, Address shippingAddress)
     {
-        var order = new Order(id,customerId,shippingAddress); 
+        var order = new Order(orderId,customerId,shippingAddress); 
         
         order.AddDomainEvent(new OrderCreatedDomainEvent(order));
 
         return order;
     }
 
-    public void AddOrderItem(Guid id, Guid productId, int quantity, decimal price){
+    public void AddOrderItem(Guid orderItemId, Guid productId, int quantity, decimal price){
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
-
+    
         if(quantity <=0) throw new DomainException(DomainExceptionMessages.ORDER_QUANTITY_NEGATIFE_OR_ZERO);
         if(price <=0) throw new DomainException(DomainExceptionMessages.ORDER_PRICE_NEGATIFE_OR_ZERO);
 
-        var orderItem = new OrderItem(id, Id, productId, quantity, price);
+        var orderItem = new OrderItem(orderItemId, Id, productId, quantity, price);
         _orderItems.Add(orderItem);
     }
 
