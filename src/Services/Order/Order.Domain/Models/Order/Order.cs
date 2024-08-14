@@ -6,6 +6,12 @@ namespace Order.Domain;
 public sealed class Order : Entity, IAggregateRoot
 {
     private readonly List<OrderItem> _orderItems = new();
+
+    private Order()
+    {
+        
+    }
+
     private Order(Guid orderId, Guid customerId, Address shippingAddress) : base(orderId)
     {
         CustomerId = customerId;

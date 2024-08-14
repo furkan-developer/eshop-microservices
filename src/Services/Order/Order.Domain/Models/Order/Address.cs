@@ -4,9 +4,9 @@ namespace Order.Domain;
 
 public record class Address
 {
-    public string FirstName { get; } = default!;
-    public string LastName { get; } = default!;
-    public string Country { get; } = default!;
+    public string FirstName { get; init;} = default!;
+    public string LastName { get; init;} = default!;
+    public string Country { get; init;} = default!;
     
     protected Address()
     {
